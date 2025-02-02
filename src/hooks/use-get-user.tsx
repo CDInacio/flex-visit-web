@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { UserService } from '@/services/user'
-import { queryConfig } from '@/config/queryConfig'
 
 export function useGetUser() {
   return useQuery({
     queryKey: ['user'],
     queryFn: UserService.getUser,
-    ...queryConfig,
+    staleTime: 1000 * 60 * 1, // 1 minuto
+    refetchInterval: 1000 * 60 * 1,
     refetchOnWindowFocus: false,
   })
 }
