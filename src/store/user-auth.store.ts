@@ -1,6 +1,6 @@
 import type { User } from '@/types/user.type'
 import { create } from 'zustand'
-
+import { useQueryClient } from '@tanstack/react-query'
 
 interface State {
   user: User | null
@@ -17,6 +17,8 @@ const useAuthStore = create<State & Actions>((set) => ({
     set({ user: data })
   },
   logout: () => {
+    const queryClient = useQueryClient()
+    queryClient.clear()
     localStorage.removeItem('user')
     localStorage.removeItem('userToken')
     set({ user: null })
