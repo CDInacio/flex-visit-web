@@ -96,15 +96,23 @@ export function NewForm() {
   }
 
   const handleAddOption = (index: number) => {
-    const updatedFields = [...inputs.form_fields]
-    if (
-      updatedFields[index].field_type === 'dropdown' ||
-      updatedFields[index].field_type === 'multiple_choice'
-    ) {
-      updatedFields[index].options = updatedFields[index].options || []
-      updatedFields[index].options.push('')
-      setInputs((prev) => ({ ...prev, form_fields: updatedFields }))
-    }
+    setInputs((prev) => {
+      const updatedFields = [...prev.form_fields]
+
+      if (
+        updatedFields[index].field_type === 'dropdown' ||
+        updatedFields[index].field_type === 'multiple_choice'
+      ) {
+        updatedFields[index].options = [
+          ...(updatedFields[index].options ?? []),
+          '',
+        ]
+
+        return { ...prev, form_fields: updatedFields }
+      }
+
+      return prev
+    })
   }
 
   const handleOptionChange = (
