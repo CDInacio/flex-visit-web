@@ -79,11 +79,6 @@ export function NewSchedule() {
     setSchedules(updatedSchedules)
   }
 
-  const parseDateToISO = (date: string): string => {
-    const [day, month, year] = date.split('/')
-    return new Date(+year, +month - 1, +day).toISOString() // Converte para ISO para o calendário
-  }
-
   const removeTimeSlot = (dayIndex: number, timeIndex: number) => {
     const updatedSchedules = schedules.map((schedule, i) =>
       i === dayIndex
