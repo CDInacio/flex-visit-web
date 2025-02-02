@@ -27,8 +27,10 @@ import { formatRelativeDate } from '../../utils/formate-date'
 import { Notification } from '../../types/notification.type'
 import { useUpdateUserImg } from '../../hooks/use-update-userImg'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function Nav() {
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { mutate: readNotification } = useReadNotification()
   const { user, logout, setUserData } = useAuthStore()
@@ -64,6 +66,10 @@ export function Nav() {
         }
       )
     }
+  }
+
+  const handleLogout = () => {
+    logout(queryClient)
   }
 
   const handleGoHome = () => {
@@ -175,7 +181,10 @@ export function Nav() {
               <IoChevronDownOutline className="w-5 h-5 ml-3 cursor-pointer" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem className="cursor-pointer" onClick={logout}>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={handleLogout}
+              >
                 Sair
               </DropdownMenuItem>
             </DropdownMenuContent>
