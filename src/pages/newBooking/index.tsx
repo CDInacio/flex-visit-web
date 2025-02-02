@@ -161,8 +161,8 @@ export function NewBooking() {
 
   const handleMultipleChoiceChange = (fieldName: string, option: string) => {
     setFormData((prevData) => {
-      const selectedOptions = Array.isArray(prevData[fieldName])
-        ? prevData[fieldName]
+      const selectedOptions: string[] = Array.isArray(prevData[fieldName])
+        ? (prevData[fieldName] as string[])
         : []
 
       const newOptions = selectedOptions.includes(option)
@@ -327,7 +327,7 @@ export function NewBooking() {
                                   formData[item.field_name] as string[]
                                 ).includes(option)
                               }
-                              onChange={(e) =>
+                              onChange={() =>
                                 handleMultipleChoiceChange(
                                   item.field_name,
                                   option
