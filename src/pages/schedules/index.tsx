@@ -54,7 +54,7 @@ export function Schedules() {
         timeslots: { starttime: string; endtime: string }[]
       }) => {
         if (!selectedMonth || !selectedYear) return true
-        const [day, month, year] = schedule.date.split('/')
+        const [, month, year] = schedule.date.split('/')
         return (
           parseInt(month, 10) === selectedMonth &&
           parseInt(year, 10) === selectedYear
