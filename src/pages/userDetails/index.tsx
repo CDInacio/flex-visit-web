@@ -12,12 +12,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useGetUserDetails } from '@/hooks/use-get-user-details'
 // import { useUpdateUserDetails } from '@/hooks/use-update-user-details'
-import {
-  IoChevronBack,
-  IoChevronDownOutline,
-  IoPencilOutline,
-} from 'react-icons/io5'
-import { useNavigate, useParams } from 'react-router-dom'
+import { IoChevronDownOutline, IoPencilOutline } from 'react-icons/io5'
+import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -35,7 +31,6 @@ import { ptBR } from 'date-fns/locale'
 import { GoBack } from '@/components/ui/back-button'
 
 export function UserDetails() {
-  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const { data: userDetails } = id ? useGetUserDetails(id) : { data: null }
   const { mutate: updateUserDetails } = useUpdateUser()
