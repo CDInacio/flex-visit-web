@@ -32,7 +32,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 
-import { IoPencilOutline, IoTrashOutline } from 'react-icons/io5'
+import { IoTrashOutline } from 'react-icons/io5'
 import { useDeleteBooking } from '@/hooks/use-delete-booking'
 import { StatusBadge } from '../ui/status-bedge'
 import { BookingsSkeleton } from '../Bookings/Skeleton'

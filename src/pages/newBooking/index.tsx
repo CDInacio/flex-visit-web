@@ -17,8 +17,6 @@ import { Container } from '../../components/container'
 import { Title } from '../../components/title'
 import { Calendar } from '../../components/ui/calendar'
 import { Subtitle } from '../../components/subtitle'
-import { IoChevronBack } from 'react-icons/io5'
-import { useNavigate } from 'react-router-dom'
 import { Dates, Timeslot } from '../../types/date.type'
 import { useToast } from '../../components/ui/use-toast'
 import { useGetSchedule } from '@/hooks/use-get-schedule'
@@ -40,7 +38,6 @@ interface FormField {
 }
 
 export function NewBooking() {
-  const navigate = useNavigate()
   const { data: form, isLoading } = useGetForms()
   const { toast } = useToast()
   const [formData, setFormData] = useState<Form>({})
@@ -113,10 +110,6 @@ export function NewBooking() {
         console.log(e)
       },
     })
-  }
-
-  const handleGoBack = () => {
-    navigate('/agendamentos')
   }
 
   const handleDateSelect = (data: Date | undefined) => {
