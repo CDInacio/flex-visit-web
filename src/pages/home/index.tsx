@@ -76,7 +76,7 @@ export function Home() {
               value={data?.totalUsers}
             />
           </div>
-          <Card className="mt-10 w-fit">
+          <Card className="mt-10 text-white w-fit">
             <CardContent>
               <PieChart
                 series={[

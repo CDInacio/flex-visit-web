@@ -46,7 +46,7 @@ export function BookingDetails() {
   const formId = booking?.form?.id
   const { data: form } = useGetForm(formId || '')
   const { data: schedules } = useGetSchedule()
-
+  console.log(booking)
   const { mutate: updateBooking, isPending: isLoadingUpdateBooking } =
     useUpdateBooking()
   const { mutate: deleteBooking } = useDeleteBooking()
@@ -150,7 +150,7 @@ export function BookingDetails() {
               {field_required && <span className="text-red-500">*</span>}
             </label>
             <Input
-              className="dark:bg-[#383838]"
+              className="dark:bg-[#383838] dark:text-white"
               type={field_type}
               value={value}
               onChange={(e) => handleChange(field_name, e.target.value)}

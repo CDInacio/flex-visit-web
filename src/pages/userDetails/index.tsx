@@ -137,9 +137,9 @@ export function UserDetails() {
                 <DropdownMenuTrigger>
                   <IoChevronDownOutline className="w-5 h-5 ml-3 cursor-pointer" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent className="">
                   <DropdownMenuItem
-                    className="cursor-pointer"
+                    className="cursor-pointer "
                     onClick={handleEdit}
                   >
                     Editar

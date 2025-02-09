@@ -156,13 +156,13 @@ export function Form() {
           <Input
             value={updatedForm?.form_name}
             onChange={(e) => handleNameChange(e.target.value)}
-            className="mb-5"
+            className="mb-5 dark:bg-[#383838] dark:border-[#4b4b4b]"
             disabled={!isEditing}
           />
           <Textarea
             value={updatedForm?.form_description}
             onChange={(e) => handleDescriptionChange(e.target.value)}
-            className="mb-5"
+            className="mb-5 dark:bg-[#383838] dark:border-[#4b4b4b]"
             disabled={!isEditing}
           />
           <Separator className="mb-5" />
@@ -170,6 +170,7 @@ export function Form() {
             <div className="flex mb-5" key={index}>
               <div className="w-full">
                 <Input
+                  className="dark:bg-[#383838] dark:border-[#4b4b4b]"
                   value={field.field_name}
                   onChange={(e) =>
                     handleFieldChange(index, 'field_name', e.target.value)
@@ -181,7 +182,7 @@ export function Form() {
                     {field.options.map(
                       (option: string, optionIndex: number) => (
                         <div
-                          className="flex items-center mb-2"
+                          className="flex items-center mb-2 "
                           key={optionIndex}
                         >
                           <Input
@@ -207,7 +208,7 @@ export function Form() {
                       )
                     )}
                     <Button
-                      className="mt-2"
+                      className="mt-2 dark:bg-[#383838] dark:border-[#4b4b4b]"
                       onClick={() => handleAddOption(index)}
                       variant="outline"
                     >
@@ -216,11 +217,11 @@ export function Form() {
                   </div>
                 )}
                 {field.field_type === 'dropdown' && isEditing && (
-                  <div className="mt-2">
+                  <div className="mt-2 ">
                     {field.options.map(
                       (option: string, optionIndex: number) => (
                         <div
-                          className="flex items-center mb-2"
+                          className="flex items-center mb-2 "
                           key={optionIndex}
                         >
                           <Input
@@ -246,7 +247,7 @@ export function Form() {
                       )
                     )}
                     <Button
-                      className="mt-2"
+                      className="mt-2 dark:bg-[#383838] dark:border-[#4b4b4b]"
                       onClick={() => handleAddOption(index)}
                       variant="outline"
                     >
@@ -292,18 +293,18 @@ export function Form() {
                 }
                 disabled={!isEditing}
               >
-                <SelectTrigger className="w-[190px] ml-2">
+                <SelectTrigger className="w-[190px] ml-2 dark:bg-[#383838]">
                   <SelectValue placeholder="Campos" />
                 </SelectTrigger>
-                <SelectContent className="w-fit">
+                <SelectContent className="w-fit dark:bg-[#383838] dark:text-white">
                   <SelectGroup>
                     {selectItems.map((item) => (
                       <SelectItem
                         value={item.value}
                         key={item.value}
-                        className="cursor-pointer"
+                        className="cursor-pointer "
                       >
-                        <div className="flex items-center">{item.name}</div>
+                        <div className="flex items-center ">{item.name}</div>
                       </SelectItem>
                     ))}
                   </SelectGroup>

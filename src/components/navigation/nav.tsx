@@ -19,6 +19,8 @@ import {
   IoChevronDownOutline,
   IoCheckmarkCircle,
   IoPencilOutline,
+  IoMoonOutline,
+  IoSunnyOutline,
 } from 'react-icons/io5'
 import { Separator } from '../ui/separator'
 import { useGetNotifications } from '../../hooks/use-get-user-notifications'
@@ -32,7 +34,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 export function Nav() {
   const queryClient = useQueryClient()
-  const { toggleTheme } = useToggleTheme()
+  const { toggleTheme, theme } = useToggleTheme()
   const navigate = useNavigate()
   const { mutate: readNotification } = useReadNotification()
   const { user, logout, setUserData } = useAuthStore()
@@ -45,7 +47,6 @@ export function Nav() {
       (item: Notification) => item.read === false
     ).length
   }
-
   const handleReadNotification = () => {
     if (notificationsLen === 0) return
     readNotification()
@@ -91,11 +92,10 @@ export function Nav() {
       />
       <div className="flex-1 flex items-center justify-end">
         <div className="flex items-center">
-          <button onClick={toggleTheme}>toggle</button>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <div className="relative">
+                <div className="relative right-4">
                   <IoNotificationsOutline className="w-6 h-6" />
                   {notificationsLen > 0 && (
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center text-white text-xs">
@@ -104,9 +104,9 @@ export function Nav() {
                   )}
                 </div>
               </TooltipTrigger>
-              <TooltipContent className="w-[400px]  max-h-[400px] overflow-y-auto">
+              <TooltipContent className="w-[400px] dark:bg-[#383838]  max-h-[400px] overflow-y-auto">
                 <div className="flex items-center justify-between ">
-                  <p className="text-base leading-7 [&:not(:first-child)]:mt-6 font-bold">
+                  <p className="text-base dark:text-white leading-7 [&:not(:first-child)]:mt-6 font-bold">
                     Notificações
                   </p>
                   <p
@@ -120,7 +120,7 @@ export function Nav() {
                 {notifications?.map((item: Notification, i: number) => (
                   <div
                     key={i}
-                    className="flex items-center  justify-between hover:bg-gray-100 cursor-pointer transition-all duration-300 rounded-lg p-3"
+                    className="flex items-center   justify-between hover:bg-gray-100 dark:hover:bg-[#4b4b4b]  cursor-pointer transition-all duration-300 rounded-lg p-3"
                   >
                     <div className="flex items-start gap-2w-full">
                       {item.type === 'success' ? (
@@ -129,11 +129,13 @@ export function Nav() {
                         <IoCheckmarkCircle />
                       ) : null}
                       <div className="flex flex-col gap-y-1">
-                        <h5 className="font-bold text-gray-800">
+                        <h5 className="font-bold text-gray-800 dark:text-white">
                           {item.message}
                         </h5>
-                        <p className="text-gray-700">{item.description}</p>
-                        <span className="text-gray-400">
+                        <p className="text-gray-700 dark:text-gray-400">
+                          {item.description}
+                        </p>
+                        <span className="text-gray-400 ">
                           {formatRelativeDate(item.createdAt)}
                         </span>
                       </div>
@@ -143,6 +145,18 @@ export function Nav() {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          {theme === 'dark' ? (
+            <IoMoonOutline
+              onClick={toggleTheme}
+              className="w-6 h-6 cursor-pointer"
+            />
+          ) : (
+            <IoSunnyOutline
+              onClick={toggleTheme}
+              className="w-6 h-6 cursor-pointer"
+            />
+          )}
+
           <Separator className="h-[60px] mx-5" orientation="vertical" />
           <div className="flex flex-col items-end leading-5">
             <p className="mr-3 font-bold">{user?.fullname}</p>

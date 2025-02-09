@@ -187,10 +187,10 @@ export function Admin() {
             <IoFilterOutline className="w-5 h-5" />
             {/* Filtro por status */}
             <Select onValueChange={(value) => handleNavigate('f', value)}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[180px] dark:bg-[#383838] dark:border-[#4b4b4b]">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="dark:bg-[#383838] dark:text-white">
                 <SelectGroup>
                   <SelectItem value="todos">Todos</SelectItem>
                   <SelectItem value="pendente">Pendente</SelectItem>
@@ -203,10 +203,10 @@ export function Admin() {
 
             {/* Filtro por data de criação */}
             <Select onValueChange={(value) => handleNavigate('periodo', value)}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[180px] dark:bg-[#383838] dark:border-[#4b4b4b]">
                 <SelectValue placeholder="Período" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="dark:bg-[#383838] dark:text-white">
                 <SelectGroup>
                   <SelectItem value="todos">Todos</SelectItem>
                   <SelectItem value="hoje">Hoje</SelectItem>
@@ -311,7 +311,7 @@ export function Admin() {
                             // })
                           }}
                         >
-                          <SelectTrigger className="w-[140px]">
+                          <SelectTrigger className="w-[140px] dark:bg-[#383838] dark:border-[#4b4b4b]">
                             <SelectValue
                               placeholder={
                                 booking?.status?.charAt(0).toUpperCase() +
@@ -321,9 +321,9 @@ export function Admin() {
                           </SelectTrigger>
                           {user?.role === 'ADMIN' ||
                           user?.role === 'ATTENDANT' ? (
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectItem value="aprovado">
+                            <SelectContent className="dark:bg-[#383838] dark:text-white dark:border-[#383838]">
+                              <SelectGroup className="">
+                                <SelectItem value="aprovado" className="">
                                   Aprovar
                                 </SelectItem>
                                 <SelectItem value="cancelado">
