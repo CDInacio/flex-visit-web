@@ -296,7 +296,7 @@ export function Users() {
                         <SelectValue placeholder={user.role} />
                       </SelectTrigger>
                       {auth?.role === 'ADMIN' && (
-                        <SelectContent className="w-[100px]">
+                        <SelectContent className="min-w-[100px]">
                           <SelectGroup>
                             <SelectItem value="ADMIN">Admin</SelectItem>
                             <SelectItem value="USER">Usuário</SelectItem>

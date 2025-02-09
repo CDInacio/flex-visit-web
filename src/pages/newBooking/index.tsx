@@ -24,6 +24,7 @@ import { useToast } from '../../components/ui/use-toast'
 import { useGetSchedule } from '@/hooks/use-get-schedule'
 import { format } from 'date-fns'
 import { Skeleton } from '@/components/ui/skeleton'
+import { GoBack } from '@/components/ui/back-button'
 
 interface Form {
   [key: string]: unknown
@@ -179,18 +180,9 @@ export function NewBooking() {
   return (
     <Container className="p-10  flex flex-col items-center">
       <div className="w-[900px]">
-        <div className="">
-          <div className="flex  items-center  mb-5 gap-2">
-            <div
-              className="flex items-center gap-2 cursor-pointer "
-              onClick={handleGoBack}
-            >
-              <IoChevronBack />
-              <p>Voltar</p>
-            </div>
-          </div>
+        <div className="mb-5">
+          <GoBack />
         </div>
-
         {isLoading ? (
           <div className="w-[1000px] mt-5 flex flex-col gap-5">
             <Skeleton className="w-full h-10" />
@@ -217,6 +209,7 @@ export function NewBooking() {
                         {item.field_required && '*'}
                       </span>
                       <Input
+                        className="dark:bg-[#4b4b4b]"
                         id={item.field_type}
                         onChange={(e) =>
                           setFormData({
@@ -244,7 +237,7 @@ export function NewBooking() {
                           <Button
                             variant={'outline'}
                             className={cn(
-                              'w-[240px] pl-3 text-left font-normal',
+                              'w-[240px] pl-3 text-left font-normal dark:bg-[#4b4b4b] dark:text-white',
                               !formData.data && 'text-muted-foreground'
                             )}
                           >
@@ -256,9 +249,9 @@ export function NewBooking() {
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
+                        <PopoverContent className="w-auto p-0 ]" align="start">
                           <Calendar
-                            className=""
+                            className="dark:bg-[#383838]"
                             locale={ptBR}
                             mode="single"
                             initialFocus
@@ -318,6 +311,7 @@ export function NewBooking() {
                             className="flex items-center gap-2"
                           >
                             <input
+                              className="dark:bg-[#fff]"
                               type="checkbox"
                               name={item.field_name}
                               value={option}
@@ -352,7 +346,7 @@ export function NewBooking() {
                             [item.field_name]: e.target.value,
                           })
                         }
-                        className="w-full p-2 mt-2 border border-gray-300 rounded-md"
+                        className="w-full p-2 mt-2 border border-gray-300 rounded-md dark:bg-[#4b4b4b]"
                       >
                         <option value="">Selecione uma opção</option>
                         {item.options?.map((option, optionIndex) => (

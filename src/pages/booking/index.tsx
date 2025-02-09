@@ -56,7 +56,7 @@ export function BookingDetails() {
   const [formData, setFormData] = useState<{ [key: string]: any }>({})
   const [availableSchedules, setAvailableSchedules] = useState<string[]>([])
   const [selectedSchedule, setSelectedSchedule] = useState<string | null>(null)
-
+  console.log(booking)
   useEffect(() => {
     if (booking?.data) {
       setFormData(formatBookingData(booking.data))
@@ -150,6 +150,7 @@ export function BookingDetails() {
               {field_required && <span className="text-red-500">*</span>}
             </label>
             <Input
+              className="dark:bg-[#383838]"
               type={field_type}
               value={value}
               onChange={(e) => handleChange(field_name, e.target.value)}
@@ -168,6 +169,7 @@ export function BookingDetails() {
               {options.map((option: string, index: number) => (
                 <label key={index} className="flex items-center gap-2">
                   <input
+                    className="dark:bg-[#383838]"
                     type="checkbox"
                     name={normalizedFieldName}
                     value={option}
@@ -201,7 +203,7 @@ export function BookingDetails() {
             </label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button className="flex items-center bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 transition-all rounded-md">
+                <Button className="flex items-center bg-gray-100 px-4 py-2 dark:bg-[#383838] dark:text-white text-gray-700 hover:bg-gray-200 transition-all rounded-md">
                   {value ? value : 'Escolha uma data'}
                   <IoCalendarOutline className="ml-2 text-gray-500" />
                 </Button>
@@ -236,7 +238,7 @@ export function BookingDetails() {
                   handleChange(normalizedFieldName, e.target.value)
                 }
                 disabled={!isEditing}
-                className="border border-gray-300 rounded-md p-2"
+                className="border border-gray-300 rounded-md p-2 dark:bg-[#383838]"
               >
                 <option value="" disabled>
                   Selecione uma opção

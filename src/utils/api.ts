@@ -12,6 +12,7 @@ export const api = axios.create({
 export const privateRequest = axios.create({
   baseURL: 'https://flexvisit-api-1.onrender.com',
 })
+// baseURL: 'https://flexvisit-api-1.onrender.com',
 
 privateRequest.interceptors.request.use((config) => {
   const token = localStorage.getItem('userToken')

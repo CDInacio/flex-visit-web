@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 @layer base {
   ::-webkit-scrollbar {
@@ -29,9 +31,14 @@
     }
   }
 
+  * {
+    font-family: "Montserrat", serif;
+
+  }
   :root {
+
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0, 0%, 7%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -65,15 +72,13 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* --background: 222.2 84% 4.9%; */
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 0 0% 22%;
     --card-foreground: 210 40% 98%;
 
     --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
@@ -89,9 +94,11 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
+    --border: 0 0% 22%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* --ring: 212.7 26.8% 83.9%; */
+
+    background-color: #121212
   }
 }
 

@@ -54,14 +54,15 @@ const renderDrawerItem = (item: DrawerItemProps, isAdmin: boolean) => {
 
   return (
     <div
-      className="hover:bg-gray-100 transition-colors my-3  rounded cursor-pointer focus:bg-accent 
+      className="hover:bg-[#383838] hover:text-[#111827] transition-colors my-3  rounded cursor-pointer focus:bg-accent 
   focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
     >
       <NavLink
         to={item.path}
         style={({ isActive }) => ({
-          backgroundColor: isActive ? '#F3F4F6' : 'transparent',
-          color: isActive ? '#111827' : '#9ca3af',
+          backgroundColor: isActive ? '#383838' : 'transparent',
+          color: isActive ? '#ffff' : '#9ca3af',
+          borderRadius: '4px',
           // fontWeight: isActive ? '550' : '400',
         })}
         className={'flex items-center px-2 py-1.5'}
@@ -77,7 +78,7 @@ export const Drawer = () => {
   const { user } = useAuthStore()
 
   return (
-    <div className="h-screen p-5 w-[250px] bg-white border border-r-[1px] fixed left-0">
+    <div className="h-screen p-5 w-[250px] dark:bg-[#1e1e1e] bg-white border border-r-[1px] fixed left-0">
       <div className="flex flex-col justify-between  h-full my-[100px]">
         <div>
           {drawerItems.map((item) => (

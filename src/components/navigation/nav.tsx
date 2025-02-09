@@ -27,8 +27,12 @@ import { formatRelativeDate } from '../../utils/formate-date'
 import { Notification } from '../../types/notification.type'
 import { useUpdateUserImg } from '../../hooks/use-update-userImg'
 import { useNavigate } from 'react-router-dom'
+import { useToggleTheme } from '@/hooks/use-toggle-theme'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function Nav() {
+  const queryClient = useQueryClient()
+  const { toggleTheme } = useToggleTheme()
   const navigate = useNavigate()
   const { mutate: readNotification } = useReadNotification()
   const { user, logout, setUserData } = useAuthStore()
@@ -66,6 +70,10 @@ export function Nav() {
     }
   }
 
+  const handleLogout = () => {
+    logout(queryClient)
+  }
+
   const handleGoHome = () => {
     if (user?.role === 'USER') {
       navigate('/perfil')
@@ -75,7 +83,7 @@ export function Nav() {
   }
 
   return (
-    <div className="w-full px-24 h-[80px] flex items-center bg-white fixed z-30 border border-b-[1px] ">
+    <div className="w-full dark:bg-[#1e1e1e] px-24 h-[80px] flex items-center bg-white fixed z-30 border border-b-[1px] ">
       <img
         onClick={handleGoHome}
         src={'/images/logo.png'}
@@ -83,6 +91,7 @@ export function Nav() {
       />
       <div className="flex-1 flex items-center justify-end">
         <div className="flex items-center">
+          <button onClick={toggleTheme}>toggle</button>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -175,7 +184,10 @@ export function Nav() {
               <IoChevronDownOutline className="w-5 h-5 ml-3 cursor-pointer" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem className="cursor-pointer" onClick={logout}>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={handleLogout}
+              >
                 Sair
               </DropdownMenuItem>
             </DropdownMenuContent>

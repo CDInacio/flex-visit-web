@@ -66,6 +66,14 @@ export function Profile() {
   }
 
   const handleSave = () => {
+    if (Object.values(userData).some((value) => !value)) {
+      return toast({
+        variant: 'destructive',
+        title: 'Erro ao atualizar informações',
+        description: 'Preencha todos os campos para continuar.',
+      })
+    }
+
     if (storedUser.user) {
       updateUser({ id: storedUser.user.id, data: userData })
     }
@@ -215,10 +223,10 @@ export function Profile() {
                   }) => (
                     <div
                       key={data.id}
-                      className="my-3"
+                      className="my-3 "
                       onClick={() => goToBookingPage(data.id)}
                     >
-                      <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100 transition duration-300 cursor-pointer">
+                      <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-[#1e1e1e] rounded-lg shadow-sm hover:bg-gray-100 transition duration-300 cursor-pointer">
                         <div>
                           <p className="font-medium">{data.form.form_name}</p>
                           <p className="text-gray-500">{data.data.data}</p>
