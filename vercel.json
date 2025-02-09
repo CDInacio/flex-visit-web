@@ -6,3 +6,11 @@
     }
   ]
 }
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ]
+}
