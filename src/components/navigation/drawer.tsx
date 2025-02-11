@@ -78,7 +78,7 @@ export const Drawer = () => {
   const { user } = useAuthStore()
 
   return (
-    <div className="h-screen p-5 w-[250px] dark:bg-[#1e1e1e] bg-white border border-r-[1px] fixed left-0">
+    <div className="h-screen p-5 w-[250px] dark:bg-transparent bg-white border border-r-[1px] fixed left-0">
       <div className="flex flex-col justify-between  h-full my-[100px]">
         <div>
           {drawerItems.map((item) => (

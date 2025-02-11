@@ -84,10 +84,10 @@ export function Nav() {
   }
 
   return (
-    <div className="w-full dark:bg-[#1e1e1e] px-24 h-[80px] flex items-center bg-white fixed z-30 border border-b-[1px] ">
+    <div className="w-full dark:bg-[#121212] px-24 h-[80px] flex items-center bg-white fixed z-30 border border-b-[1px] ">
       <img
         onClick={handleGoHome}
-        src={'/images/logo.png'}
+        src={`/images/${theme === 'dark' ? 'logo-white.png' : 'logo.png'}`}
         className="h-32  w-32 cursor-pointer"
       />
       <div className="flex-1 flex items-center justify-end">

@@ -187,7 +187,7 @@ export function Admin() {
             <IoFilterOutline className="w-5 h-5" />
             {/* Filtro por status */}
             <Select onValueChange={(value) => handleNavigate('f', value)}>
-              <SelectTrigger className="w-[180px] dark:bg-[#383838] dark:border-[#4b4b4b]">
+              <SelectTrigger className="w-[180px] ">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent className="dark:bg-[#383838] dark:text-white">
@@ -203,7 +203,7 @@ export function Admin() {
 
             {/* Filtro por data de criação */}
             <Select onValueChange={(value) => handleNavigate('periodo', value)}>
-              <SelectTrigger className="w-[180px] dark:bg-[#383838] dark:border-[#4b4b4b]">
+              <SelectTrigger className="w-[180px] ">
                 <SelectValue placeholder="Período" />
               </SelectTrigger>
               <SelectContent className="dark:bg-[#383838] dark:text-white">
@@ -311,7 +311,7 @@ export function Admin() {
                             // })
                           }}
                         >
-                          <SelectTrigger className="w-[140px] dark:bg-[#383838] dark:border-[#4b4b4b]">
+                          <SelectTrigger className="w-[140px]  dark:border-[#4b4b4b]">
                             <SelectValue
                               placeholder={
                                 booking?.status?.charAt(0).toUpperCase() +

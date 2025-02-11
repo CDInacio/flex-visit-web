@@ -7,6 +7,7 @@ import { CardContent } from '@mui/material'
 import { DashboardItem } from '../../components/home/DashboardItem'
 import { useNavigate } from 'react-router-dom'
 import { DashboardSkeleton } from '@/components/Dashboard/Skeleton'
+import { color } from 'framer-motion'
 
 export function Home() {
   const navigate = useNavigate()
@@ -76,7 +77,7 @@ export function Home() {
               value={data?.totalUsers}
             />
           </div>
-          <Card className="mt-10 text-white w-fit">
+          <Card className="mt-10 dark:text-white w-fit">
             <CardContent>
               <PieChart
                 series={[
