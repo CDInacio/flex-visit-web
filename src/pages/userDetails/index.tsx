@@ -32,7 +32,7 @@ import { GoBack } from '@/components/ui/back-button'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export function UserDetails() {
-  const { id } = useParams<{ id: string }>()
+  const { id = '' } = useParams<{ id?: string }>()
   const { data: userDetails, isLoading } = id
     ? useGetUserDetails(id)
     : { data: null }
