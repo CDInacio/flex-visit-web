@@ -32,10 +32,15 @@ import { GoBack } from '@/components/ui/back-button'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export function UserDetails() {
-  const { id } = useParams<{ id: string }>()
-  const { data: userDetails, isLoading } = id
+  const { id } = useParams<{ id?: string }>()
+
+  const userQuery = id
     ? useGetUserDetails(id)
     : { data: null, isLoading: false }
+
+  const userDetails = userQuery.data
+  const isLoading = userQuery.isLoading
+
   const { mutate: updateUserDetails } = useUpdateUser()
   const { mutate: updateImg } = useUpdateUserImg()
   const [isEditing, setIsEditing] = useState(false)
