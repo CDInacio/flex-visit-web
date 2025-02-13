@@ -273,13 +273,13 @@ export function NewBooking() {
                               }}
                               key={slot._id}
                               variant="outline"
-                              className={`hover:bg-primary hover:text-white ${
+                              className={`hover:bg-primary dark:bg-transparent dark:text-white hover:text-white dark:hover:bg-white dark:hover:text-gray-800 ${
                                 !slot.available &&
-                                'text-gray-400 hover:text-gray-400 hover:bg-white cursor-default'
+                                'text-gray-400 hover:text-gray-400 dark:bg-transparent dark:hover:text-gray-600 dark:text-gray-600 hover:bg-white cursor-default dark:hover:bg-transparent'
                               } ${
                                 slot.starttime === formData.starttime &&
                                 slot.endtime === formData.endtime &&
-                                'bg-primary text-white'
+                                'bg-primary text-white dark:bg-white dark:text-gray-800'
                               }`}
                             >
                               {slot.starttime} - {slot.endtime}
