@@ -18,7 +18,7 @@ import { Title } from '../../components/title'
 import { Calendar } from '../../components/ui/calendar'
 import { Subtitle } from '../../components/subtitle'
 import { Dates, Timeslot } from '../../types/date.type'
-import { useToast } from '../../components/ui/use-toast'
+import { toast } from '../../components/ui/use-toast'
 import { useGetSchedule } from '@/hooks/use-get-schedule'
 import { format } from 'date-fns'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -39,7 +39,6 @@ interface FormField {
 
 export function NewBooking() {
   const { data: form, isLoading } = useGetForms()
-  const { toast } = useToast()
   const [formData, setFormData] = useState<Form>({})
   const [avaliableSlots, setAvaliableSlots] = useState<Timeslot[]>([])
   const { data: dates } = useGetSchedule()
@@ -151,7 +150,7 @@ export function NewBooking() {
         description: 'Aguarde um momento...',
       })
     }
-  }, [isLoading])
+  }, [isLoadingCreateBooking])
 
   const handleMultipleChoiceChange = (fieldName: string, option: string) => {
     setFormData((prevData) => {
