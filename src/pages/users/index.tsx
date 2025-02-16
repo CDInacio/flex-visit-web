@@ -61,7 +61,7 @@ import { useNavigate } from 'react-router-dom'
 import useAuthStore from '@/store/user-auth.store'
 import { useToast } from '@/components/ui/use-toast'
 import { BookingSkeleton } from '@/components/Booking/Skeleton'
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export function Users() {
   const { user: auth } = useAuthStore()
@@ -78,72 +78,54 @@ export function Users() {
     navigate(url)
   }
 
-  // Função para filtrar os dados com base nos parâmetros
-  const getFilteredData = (data: User[]) => {
-    const param = new URLSearchParams(window.location.search)
-    const usuario = param.get('role')
-    const periodo = param.get('periodo')
+  const [selectedRole, setSelectedRole] = useState<string | null>(null)
+  const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null)
 
-    let filteredData = data
+  const handleClearFilters = () => {
+    setSelectedRole(null)
+    setSelectedPeriod(null)
+  }
 
-    if (usuario && usuario !== 'todos') {
-      filteredData = filteredData?.filter(
-        (user) => user.role.toLowerCase() === usuario
+  const getFilteredData = useMemo(() => {
+    let filteredData = data || []
+
+    if (selectedRole && selectedRole !== 'todos') {
+      filteredData = filteredData.filter(
+        (user: { role: string }) => user.role.toLowerCase() === selectedRole
       )
     }
 
-    if (periodo && periodo !== 'todos') {
-      const currentDate = new Date()
-      const today = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        currentDate.getDate()
-      )
-      const yesterday = new Date(today)
-      yesterday.setDate(yesterday.getDate() - 1)
+    if (selectedPeriod && selectedPeriod !== 'todos') {
+      const today = new Date()
       const thisWeek = new Date(today)
-      thisWeek.setDate(thisWeek.getDate() - today.getDay())
+      thisWeek.setDate(today.getDate() - today.getDay())
       const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1)
       const thisYear = new Date(today.getFullYear(), 0, 1)
 
-      switch (periodo) {
-        case 'hoje':
-          filteredData = filteredData?.filter(
-            (user) => new Date(user.createdAt) >= today
-          )
-          break
-        case 'ontem':
-          filteredData = filteredData?.filter(
-            (user) =>
-              new Date(user.createdAt) >= yesterday &&
-              new Date(user.createdAt) < today
-          )
-          break
-        case 'essa-semana':
-          filteredData = filteredData?.filter(
-            (user) => new Date(user.createdAt) >= thisWeek
-          )
-          break
-        case 'esse-mes':
-          filteredData = filteredData?.filter(
-            (user) => new Date(user.createdAt) >= thisMonth
-          )
-          break
-        case 'esse-ano':
-          filteredData = filteredData?.filter(
-            (user) => new Date(user.createdAt) >= thisYear
-          )
-          break
-        default:
-          break
-      }
+      filteredData = filteredData.filter(
+        (user: { createdAt: string | number | Date }) => {
+          const userDate = new Date(user.createdAt)
+          switch (selectedPeriod) {
+            case 'hoje':
+              return userDate.toDateString() === today.toDateString()
+            case 'essa-semana':
+              return userDate >= thisWeek
+            case 'esse-mes':
+              return userDate >= thisMonth
+            case 'esse-ano':
+              return userDate >= thisYear
+            default:
+              return true
+          }
+        }
+      )
     }
-    return filteredData
-  }
 
-  // Adicionando paginação
+    return filteredData
+  }, [data, selectedRole, selectedPeriod])
+
   const { currentPage, setCurrentPage, itens, numbers } = usePagination<User>(
-    getFilteredData(data),
+    getFilteredData,
     5
   )
 
@@ -196,7 +178,10 @@ export function Users() {
         <div className="flex items-center gap-5">
           <IoFilterOutline className="w-5 h-5" />
           {/* Filtrar por função de usuário */}
-          <Select onValueChange={(value) => handleNavigate('role', value)}>
+          <Select
+            value={selectedRole || undefined}
+            onValueChange={(value) => setSelectedRole(value)}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Tipo de usuário" />
             </SelectTrigger>
@@ -211,7 +196,10 @@ export function Users() {
             </SelectContent>
           </Select>
           {/* Filtrar por período */}
-          <Select onValueChange={(value) => handleNavigate('periodo', value)}>
+          <Select
+            value={selectedPeriod || undefined}
+            onValueChange={(value) => setSelectedPeriod(value)}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Período" />
             </SelectTrigger>
@@ -226,6 +214,7 @@ export function Users() {
               </SelectGroup>
             </SelectContent>
           </Select>
+          <Button onClick={handleClearFilters}>Limpar Filtros</Button>
         </div>
       </div>
       {isLoading ? (

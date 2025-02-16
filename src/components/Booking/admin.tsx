@@ -124,7 +124,11 @@ export function Admin() {
   const { data: bookings, isLoading } = useGetBookings()
   const { mutate: updateStatus, isPending: isLoadingUpdateStatus } =
     useUpdateBookingStatus()
+
   const currentParams = new URLSearchParams(window.location.search)
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
+  const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null)
+
   const [observation, setObservation] = useState('')
   const [selectedBooking, setSelectedBooking] =
     useState<SelectedBooking | null>(null)
@@ -140,6 +144,12 @@ export function Admin() {
     [navigate, currentParams]
   )
 
+  const handleClearFilters = () => {
+    setSelectedStatus(null)
+    setSelectedPeriod(null)
+    navigate('/agendamentos')
+  }
+
   useEffect(() => {
     if (isLoadingUpdateStatus) {
       toast({
@@ -150,12 +160,46 @@ export function Admin() {
     }
   }, [isLoadingUpdateStatus])
 
-  const filteredData = useMemo(
-    () => getFilteredData(bookings),
-    [bookings, currentParams.toString()]
-  )
+  const getFilteredData = useMemo(() => {
+    let filteredData = bookings || []
+
+    if (selectedStatus && selectedStatus !== 'todos') {
+      filteredData = filteredData.filter(
+        (booking: { status: string }) => booking.status === selectedStatus
+      )
+    }
+
+    if (selectedPeriod && selectedPeriod !== 'todos') {
+      const today = new Date()
+      const thisWeek = new Date(today)
+      thisWeek.setDate(today.getDate() - today.getDay())
+      const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1)
+      const thisYear = new Date(today.getFullYear(), 0, 1)
+
+      filteredData = filteredData.filter(
+        (booking: { createdAt: string | number | Date }) => {
+          const bookingDate = new Date(booking.createdAt)
+          switch (selectedPeriod) {
+            case 'hoje':
+              return bookingDate.toDateString() === today.toDateString()
+            case 'essa-semana':
+              return bookingDate >= thisWeek
+            case 'esse-mes':
+              return bookingDate >= thisMonth
+            case 'esse-ano':
+              return bookingDate >= thisYear
+            default:
+              return true
+          }
+        }
+      )
+    }
+
+    return filteredData
+  }, [bookings, selectedStatus, selectedPeriod])
+
   const { currentPage, setCurrentPage, itens, numbers } =
-    usePagination<Booking>(filteredData, 6)
+    usePagination<Booking>(getFilteredData, 6)
 
   const handleGoToUserDetailsPage = (id: string) => {
     navigate(`/usuarios/${id}`)
@@ -186,7 +230,10 @@ export function Admin() {
           <div className="flex items-center gap-5">
             <IoFilterOutline className="w-5 h-5" />
             {/* Filtro por status */}
-            <Select onValueChange={(value) => handleNavigate('f', value)}>
+            <Select
+              value={selectedStatus || undefined}
+              onValueChange={(value) => setSelectedStatus(value)}
+            >
               <SelectTrigger className="w-[180px] ">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
@@ -202,7 +249,10 @@ export function Admin() {
             </Select>
 
             {/* Filtro por data de criação */}
-            <Select onValueChange={(value) => handleNavigate('periodo', value)}>
+            <Select
+              value={selectedPeriod || undefined}
+              onValueChange={(value) => setSelectedPeriod(value)}
+            >
               <SelectTrigger className="w-[180px] ">
                 <SelectValue placeholder="Período" />
               </SelectTrigger>
@@ -217,6 +267,7 @@ export function Admin() {
                 </SelectGroup>
               </SelectContent>
             </Select>
+            <Button onClick={handleClearFilters}>Limpar Filtros</Button>
           </div>
         </div>
         <div className="mt-5">

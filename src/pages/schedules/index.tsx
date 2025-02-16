@@ -50,18 +50,25 @@ export function Schedules() {
   const filteredSchedules = schedules
     ?.filter(
       (schedule: {
-        date: string
-        timeslots: { starttime: string; endtime: string }[]
+        date: {
+          split: (arg0: string) => {
+            (): any
+            new (): any
+            map: { (arg0: NumberConstructor): [any, any, any]; new (): any }
+          }
+        }
       }) => {
-        if (!selectedMonth || !selectedYear) return true
-        const [, month, year] = schedule.date.split('/')
-        return (
-          parseInt(month, 10) === selectedMonth &&
-          parseInt(year, 10) === selectedYear
-        )
+        if (!selectedMonth && !selectedYear) return true
+
+        const [, month, year] = schedule.date.split('/').map(Number)
+
+        const monthMatches = selectedMonth ? month === selectedMonth : true
+        const yearMatches = selectedYear ? year === selectedYear : true
+
+        return monthMatches && yearMatches
       }
     )
-    .sort((a: any, b: any) =>
+    .sort((a: { date: string }, b: { date: string }) =>
       sortOrder === 'asc'
         ? parseDate(a.date).getTime() - parseDate(b.date).getTime()
         : parseDate(b.date).getTime() - parseDate(a.date).getTime()
@@ -85,7 +92,7 @@ export function Schedules() {
         {/* Filtros */}
         <div className="flex items-center space-x-4 mb-6">
           <IoFilterOutline className="w-5 h-5" />
-          <Select onValueChange={(value) => setSelectedMonth(parseInt(value))}>
+          <Select onValueChange={(value) => setSelectedMonth(Number(value))}>
             <SelectTrigger className="w-40  ">
               <SelectValue placeholder="Selecione o mês" />
             </SelectTrigger>
@@ -100,7 +107,7 @@ export function Schedules() {
             </SelectContent>
           </Select>
 
-          <Select onValueChange={(value) => setSelectedYear(parseInt(value))}>
+          <Select onValueChange={(value) => setSelectedYear(Number(value))}>
             <SelectTrigger className="w-40  ">
               <SelectValue placeholder="Selecione o ano" />
             </SelectTrigger>
@@ -124,6 +131,15 @@ export function Schedules() {
               <SelectItem value="desc">Mais recente</SelectItem>
             </SelectContent>
           </Select>
+          <Button
+            onClick={() => {
+              setSelectedMonth(null)
+              setSelectedYear(null)
+              setSortOrder('desc')
+            }}
+          >
+            Limpar Filtros
+          </Button>
         </div>
 
         {isLoading ? (

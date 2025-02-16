@@ -341,21 +341,30 @@ export function BookingDetails() {
                 )}
               </div>
             )}
-            {isEditing && (
-              <div className="flex justify-end mt-5">
-                <Button className="ml-4" onClick={(e) => handleSave(e)}>
-                  Salvar
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={handleCancel}
-                  className="bg-destructive hover:bg-destructive/90 ml-3 text-white"
-                >
-                  Cancelar
-                </Button>
-              </div>
-            )}
           </form>
+        )}
+        <p className="w-fit bg-accent text-gray-600 font-medium px-4 py-2 rounded dark:bg-[#383838] dark:text-white">
+          {booking?.data?.starttime}- {booking?.data?.endtime}
+        </p>
+        <div className="bg-accent px-4 py-2 rounded mt-4 dark:bg-[#383838] dark:text-white">
+          <h4 className="font-medium text-gray-600 dark:text-gray-400">
+            Observações
+          </h4>
+          <p className="mt-2 dark:text-white">{booking?.observation}</p>
+        </div>
+        {isEditing && (
+          <div className="flex justify-end mt-5">
+            <Button className="ml-4" onClick={(e) => handleSave(e)}>
+              Salvar
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={handleCancel}
+              className="bg-destructive hover:bg-destructive/90 ml-3 text-white"
+            >
+              Cancelar
+            </Button>
+          </div>
         )}
       </div>
     </Container>

@@ -49,7 +49,8 @@ export function All() {
   const { user } = useAuthStore()
   const navigate = useNavigate()
   const { data: forms, isError, error, isLoading } = useGetForms()
-  const { mutate: updateStatus } = useUpdateFormStatus()
+  const { mutate: updateStatus, isPending: isLoadingUpdateFormStatus } =
+    useUpdateFormStatus()
   const { mutate: deleteForm, isPending: isLoadingDeleteForm } = useDeleteForm()
 
   const orderedForms = useMemo(() => {
@@ -77,6 +78,16 @@ export function All() {
       })
     }
   }, [isLoadingDeleteForm])
+
+  useEffect(() => {
+    if (isLoadingUpdateFormStatus) {
+      toast({
+        variant: 'default',
+        title: 'Atualizando o status do formulário',
+        description: 'Aguarde um momento...',
+      })
+    }
+  }, [isLoadingUpdateFormStatus])
 
   return (
     <div>
