@@ -70,13 +70,6 @@ export function Users() {
   const { mutate: deleteUser, isPending: isLoadingDeleteUser } = useDeleteUser()
   const { mutate: updateUser, isPending: isLoadingUpdateUser } = useUpdateUser()
   const { toast } = useToast()
-  // Função para lidar com a navegação e aplicar filtros de usuário e período
-  const handleNavigate = (queryParam: string, value: string) => {
-    const currentParams = new URLSearchParams(window.location.search)
-    currentParams.set(queryParam, value)
-    const url = `/usuarios?${currentParams.toString()}`
-    navigate(url)
-  }
 
   const [selectedRole, setSelectedRole] = useState<string | null>(null)
   const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null)
