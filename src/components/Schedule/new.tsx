@@ -1,7 +1,7 @@
 import { Container } from '@/components/container'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   IoAddOutline,
   IoCalendarOutline,
@@ -16,6 +16,7 @@ import {
 import { ptBR } from 'date-fns/locale'
 import { useCreateSchedule } from '@/hooks/use-create-schedule'
 import { useNavigate } from 'react-router-dom'
+import { toast } from '../ui/use-toast'
 
 type TimeSlot = {
   starttime: string
@@ -29,12 +30,22 @@ type Schedule = {
 
 export function NewSchedule() {
   const navigate = useNavigate()
-  const { mutate: createSchedule } = useCreateSchedule()
+  const { mutate: createSchedule, isPending: isLoading } = useCreateSchedule()
   const [schedules, setSchedules] = useState<Schedule[]>([])
 
   const addNewDay = () => {
     setSchedules([...schedules, { date: '', timeSlots: [] }])
   }
+
+  useEffect(() => {
+    if (isLoading) {
+      toast({
+        variant: 'default',
+        title: 'Atualizando o agendamento',
+        description: 'Aguarde um momento...',
+      })
+    }
+  }, [isLoading])
 
   const addTimeSlot = (index: number) => {
     const updatedSchedules = schedules.map((schedule, i) =>
