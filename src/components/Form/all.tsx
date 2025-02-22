@@ -108,7 +108,7 @@ export function All() {
               </TableHeader>
               <TableBody>
                 {itens?.map((form: FormResponse) => (
-                  <TableRow>
+                  <TableRow key={form.id}>
                     <TableCell
                       className="cursor-pointer"
                       onClick={() => navigate(`/formularios/${form.id}`)}
