@@ -46,7 +46,6 @@ export function BookingDetails() {
   const formId = booking?.form?.id
   const { data: form } = useGetForm(formId || '')
   const { data: schedules } = useGetSchedule()
-  console.log(booking)
   const { mutate: updateBooking, isPending: isLoadingUpdateBooking } =
     useUpdateBooking()
   const { mutate: deleteBooking } = useDeleteBooking()
@@ -56,7 +55,7 @@ export function BookingDetails() {
   const [formData, setFormData] = useState<{ [key: string]: any }>({})
   const [availableSchedules, setAvailableSchedules] = useState<string[]>([])
   const [selectedSchedule, setSelectedSchedule] = useState<string | null>(null)
-  console.log(booking)
+
   useEffect(() => {
     if (booking?.data) {
       setFormData(formatBookingData(booking.data))
@@ -115,9 +114,7 @@ export function BookingDetails() {
 
   const handleSave = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
-
-    // Handle restricted statuses
-    const restrictedStatuses = ['aprovado', 'cancelado', 'concluído']
+    const restrictedStatuses = ['aprovado', 'cancelado', 'concluido']
 
     if (restrictedStatuses.includes(booking?.status)) {
       toast({
@@ -134,7 +131,6 @@ export function BookingDetails() {
     }
   }
 
-  // Render the form field dynamically based on type
   const renderInputField = (field: any) => {
     const { field_name, field_type, options, id, field_required } = field
     const normalizedFieldName = field_name.toLowerCase()
