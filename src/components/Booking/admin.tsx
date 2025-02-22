@@ -39,7 +39,7 @@ import {
 } from '@/components/ui/pagination'
 import { useNavigate } from 'react-router-dom'
 import { IoFilterOutline } from 'react-icons/io5'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
@@ -55,69 +55,6 @@ interface SelectedBooking {
   booking: Booking
 }
 
-function getFilteredData(data: Booking[]) {
-  const cParams = new URLSearchParams(window.location.search)
-  const filter = cParams.get('f')
-  const periodo = cParams.get('periodo')
-
-  let filteredData = data
-
-  if (filter && filter !== 'todos') {
-    filteredData = filteredData?.filter(
-      (booking: Booking) => booking.status === filter
-    )
-  }
-
-  if (periodo && periodo !== 'todos') {
-    const currentDate = new Date()
-    const today = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      currentDate.getDate()
-    )
-    const yesterday = new Date(today)
-    yesterday.setDate(yesterday.getDate() - 1)
-    const thisWeek = new Date(today)
-    thisWeek.setDate(thisWeek.getDate() - today.getDay())
-    const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1)
-    const thisYear = new Date(today.getFullYear(), 0, 1)
-
-    switch (periodo) {
-      case 'hoje':
-        filteredData = filteredData?.filter(
-          (booking) => new Date(booking.createdAt) >= today
-        )
-        break
-      case 'ontem':
-        filteredData = filteredData?.filter(
-          (booking) =>
-            new Date(booking.createdAt) >= yesterday &&
-            new Date(booking.createdAt) < today
-        )
-        break
-      case 'essa-semana':
-        filteredData = filteredData?.filter(
-          (booking) => new Date(booking.createdAt) >= thisWeek
-        )
-        break
-      case 'esse-mes':
-        filteredData = filteredData?.filter(
-          (booking) => new Date(booking.createdAt) >= thisMonth
-        )
-        break
-      case 'esse-ano':
-        filteredData = filteredData?.filter(
-          (booking) => new Date(booking.createdAt) >= thisYear
-        )
-        break
-      default:
-        break
-    }
-  }
-
-  return filteredData
-}
-
 export function Admin() {
   const { user } = useAuthStore()
   const navigate = useNavigate()
@@ -125,7 +62,6 @@ export function Admin() {
   const { mutate: updateStatus, isPending: isLoadingUpdateStatus } =
     useUpdateBookingStatus()
 
-  const currentParams = new URLSearchParams(window.location.search)
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
   const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null)
 
@@ -133,16 +69,6 @@ export function Admin() {
   const [selectedBooking, setSelectedBooking] =
     useState<SelectedBooking | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
-
-  const handleNavigate = useCallback(
-    (queryParam: string, value: string) => {
-      currentParams.delete(queryParam)
-      currentParams.append(queryParam, value)
-      const url = `/agendamentos?${currentParams.toString()}`
-      navigate(url)
-    },
-    [navigate, currentParams]
-  )
 
   const handleClearFilters = () => {
     setSelectedStatus(null)
