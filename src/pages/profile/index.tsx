@@ -25,7 +25,6 @@ import {
 } from '@/components/profile/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { PageTitle } from '@/utils/pageTitle'
-import { set } from 'date-fns'
 
 export function Profile() {
   const storedUser = useAuthStore()
