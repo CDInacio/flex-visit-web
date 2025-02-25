@@ -24,7 +24,7 @@ type TimeSlot = {
 }
 
 type Schedule = {
-  date: string // Armazena no formato dd/mm/aaaa
+  date: string
   timeSlots: TimeSlot[]
 }
 
