@@ -16,11 +16,11 @@ export function useUpdateUser() {
       })
       queryClient.invalidateQueries({ queryKey: ['users'] })
     },
-    onError: () => {
+    onError: (e) => {
       toast({
         variant: 'destructive',
-        title: 'Erro ao atualizar status',
-        description: 'Ocorreu um erro ao atualizar o status do usuário',
+        title: 'Erro ao atualizar usuário',
+        description: e.message,
       })
     },
   })
