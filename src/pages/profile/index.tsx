@@ -25,6 +25,7 @@ import {
 } from '@/components/profile/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { PageTitle } from '@/utils/pageTitle'
+import { set } from 'date-fns'
 
 export function Profile() {
   const storedUser = useAuthStore()
@@ -76,7 +77,19 @@ export function Profile() {
     }
 
     if (storedUser.user) {
-      updateUser({ id: storedUser.user.id, data: userData })
+      updateUser(
+        { id: storedUser.user.id, data: userData },
+        {
+          onError() {
+            setUserData({
+              fullname: user?.fullname || '',
+              email: user?.email || '',
+              phoneNumber: user?.phoneNumber || '',
+              document: user?.document || '',
+            })
+          },
+        }
+      )
     }
 
     setIsEditing(false)
