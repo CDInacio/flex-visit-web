@@ -2,21 +2,12 @@ import { useState, useEffect } from 'react'
 import { Container } from '@/components/container'
 import { Title } from '@/components/title'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu'
+
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useGetUserDetails } from '@/hooks/use-get-user-details'
 // import { useUpdateUserDetails } from '@/hooks/use-update-user-details'
-import {
-  IoChevronDownOutline,
-  IoPencilOutline,
-  IoTrashOutline,
-} from 'react-icons/io5'
+import { IoPencilOutline } from 'react-icons/io5'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import {
@@ -34,19 +25,6 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { GoBack } from '@/components/ui/back-button'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@radix-ui/react-alert-dialog'
-import {
-  AlertDialogFooter,
-  AlertDialogHeader,
-} from '@/components/ui/alert-dialog'
 
 export function UserDetails() {
   const { id } = useParams<{ id?: string }>()
