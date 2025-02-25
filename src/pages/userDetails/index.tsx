@@ -12,7 +12,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useGetUserDetails } from '@/hooks/use-get-user-details'
 // import { useUpdateUserDetails } from '@/hooks/use-update-user-details'
-import { IoChevronDownOutline, IoPencilOutline } from 'react-icons/io5'
+import {
+  IoChevronDownOutline,
+  IoPencilOutline,
+  IoTrashOutline,
+} from 'react-icons/io5'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import {
@@ -30,6 +34,19 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { GoBack } from '@/components/ui/back-button'
 import { Skeleton } from '@/components/ui/skeleton'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@radix-ui/react-alert-dialog'
+import {
+  AlertDialogFooter,
+  AlertDialogHeader,
+} from '@/components/ui/alert-dialog'
 
 export function UserDetails() {
   const { id } = useParams<{ id?: string }>()
@@ -107,7 +124,38 @@ export function UserDetails() {
     <Container className="p-10 flex flex-col items-center">
       <div className="w-[1000px]">
         {/* Informações do usuário */}
-        <GoBack />
+        <div className="flex justify-between">
+          <GoBack />
+          <div className="flex gap-5">
+            <Card
+              className="p-3 cursor-pointer flex items-center gap-4"
+              onClick={handleEdit}
+            >
+              <IoPencilOutline className="h-5 w-5 text-gray-500" />
+              <p className="text-gray-500 hover:text-gray-700">Editar</p>
+            </Card>
+            {/* <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Card className="p-3 cursor-pointer">
+                  <IoTrashOutline className="h-5 w-5" />
+                </Card>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Excluir agendamento?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Esta ação não pode ser desfeita. Deseja excluir
+                    permanentemente este agendamento?
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction>Excluir</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog> */}
+          </div>
+        </div>
         {isLoading ? (
           <div className="mt-5 relative w-[1000px]  ">
             <Skeleton className="w-24 h-24 rounded-full absolute right-10 -top-36" />
@@ -153,22 +201,6 @@ export function UserDetails() {
                     </Avatar>
                     <IoPencilOutline className="absolute inset-0 m-auto w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                   </div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <IoChevronDownOutline className="w-5 h-5 ml-3 cursor-pointer" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="">
-                      <DropdownMenuItem
-                        className="cursor-pointer "
-                        onClick={handleEdit}
-                      >
-                        Editar
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">
-                        Excluir
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
                 </div>
               </div>
             </div>
