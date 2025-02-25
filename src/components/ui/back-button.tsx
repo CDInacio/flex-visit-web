@@ -7,11 +7,11 @@ export function GoBack() {
 
   return (
     <Card
+      className="p-3 cursor-pointer flex items-center gap-4"
       onClick={() => navigate(-1)}
-      className="flex relative w-fit cursor-pointer  py-2 px-8 dark:bg-transparent dark:text-white items-center text-gray-500 hover:text-gray-700"
     >
-      <IoChevronBack className="mr-2 absolute left-2 " />
-      Voltar
+      <IoChevronBack className="h-5 w-5 text-gray-500" />
+      <p className="text-gray-500 hover:text-gray-700">Voltar</p>
     </Card>
   )
 }
