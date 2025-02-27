@@ -6,11 +6,11 @@ import axios from 'axios'
 // };
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'https://flexvisit-api-1.onrender.com',
 })
 
 export const privateRequest = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'https://flexvisit-api-1.onrender.com',
 })
 
 privateRequest.interceptors.request.use((config) => {
