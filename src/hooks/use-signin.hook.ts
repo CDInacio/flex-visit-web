@@ -11,7 +11,12 @@ export function useSignin() {
     mutationFn: UserService.signin,
     onSuccess: (data) => {
       if (data) {
-        if (data.user.role === 'USER') {
+        const userRole = data.user.role
+        if (
+          userRole === 'USER' ||
+          userRole === 'COORDINATOR' ||
+          userRole === 'ATTENDANT'
+        ) {
           navigate('/perfil')
         } else {
           navigate('/')

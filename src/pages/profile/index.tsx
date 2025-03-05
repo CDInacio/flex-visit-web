@@ -25,13 +25,20 @@ import {
 } from '@/components/profile/skeleton'
 import { toast } from '@/components/ui/use-toast'
 import { PageTitle } from '@/utils/pageTitle'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function Profile() {
+  const queryClient = useQueryClient()
+
   const storedUser = useAuthStore()
   const navigate = useNavigate()
   const { data: user, isLoading: loadingUser } = useGetUser()
   const { data: bookings, isLoading: loadingBookings } = useGetUserBookings()
   const { mutate: updateUser, isPending: loadingUpdateUser } = useUpdateUser()
+
+  const handleLogout = () => {
+    storedUser.logout(queryClient)
+  }
 
   const [isEditing, setIsEditing] = useState(false)
   const [userData, setUserData] = useState({
@@ -79,6 +86,25 @@ export function Profile() {
       updateUser(
         { id: storedUser.user.id, data: userData },
         {
+          onSuccess(data) {
+            if (data.logoutRequired) {
+              toast({
+                variant: 'default',
+                title: 'Informações atualizadas',
+                description:
+                  'Suas informações foram atualizadas com sucesso. Faça login novamente para continuar.',
+              })
+              setTimeout(() => {
+                handleLogout()
+              }, 2000)
+              return
+            }
+            toast({
+              variant: 'success',
+              title: 'Informações atualizadas',
+              description: 'Suas informações foram atualizadas com sucesso.',
+            })
+          },
           onError() {
             setUserData({
               fullname: user?.fullname || '',

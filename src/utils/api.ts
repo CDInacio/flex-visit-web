@@ -5,6 +5,7 @@ import axios from 'axios'
 //   return response.data.accessToken;
 // };
 
+// baseURL: 'http://localhost:3001',
 export const api = axios.create({
   baseURL: 'http://localhost:3001',
 })
@@ -12,6 +13,7 @@ export const api = axios.create({
 export const privateRequest = axios.create({
   baseURL: 'http://localhost:3001',
 })
+// baseURL: 'https://flexvisit-api-1.onrender.com',
 
 privateRequest.interceptors.request.use((config) => {
   const token = localStorage.getItem('userToken')
