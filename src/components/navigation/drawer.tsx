@@ -83,12 +83,7 @@ export const Drawer = () => {
         <div>
           {drawerItems.map((item) => (
             <div key={item.name}>
-              {renderDrawerItem(
-                item,
-                user?.role === 'ADMIN' ||
-                  user?.role === 'ATTENDANT' ||
-                  user?.role === 'COORDINATOR'
-              )}
+              {renderDrawerItem(item, user?.role === 'ADMIN')}
             </div>
           ))}
         </div>
