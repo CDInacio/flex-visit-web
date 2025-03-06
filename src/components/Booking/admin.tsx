@@ -85,7 +85,7 @@ export function Admin() {
       })
     }
   }, [isLoadingUpdateStatus])
-
+  console.log(user)
   const getFilteredData = useMemo(() => {
     let filteredData = bookings || []
 
