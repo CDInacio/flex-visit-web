@@ -38,8 +38,10 @@ import { GoBack } from '@/components/ui/back-button'
 import { useToast } from '@/components/ui/use-toast'
 import { StatusBadge } from '@/components/ui/status-bedge'
 import { BedgeSkeleton, BookingSkeleton } from '@/components/Booking/Skeleton'
+import useAuthStore from '@/store/user-auth.store'
 
 export function BookingDetails() {
+  const { user } = useAuthStore()
   const { id } = useParams<{ id: string }>()
   const { data: booking, isLoading } = useGetBooking(id!)
   const { toast } = useToast()
@@ -259,33 +261,37 @@ export function BookingDetails() {
         <div className="mb-10">
           <div className="flex justify-between">
             <GoBack />
-            <div className="flex gap-5">
-              <Card className="p-3 cursor-pointer" onClick={handleEdit}>
-                <IoPencilOutline className="h-5 w-5" />
-              </Card>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Card className="p-3 cursor-pointer">
-                    <IoTrashOutline className="h-5 w-5" />
-                  </Card>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Excluir agendamento?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Esta ação não pode ser desfeita. Deseja excluir
-                      permanentemente este agendamento?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => id && deleteBooking(id)}>
-                      Excluir
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
+            {user?.role !== 'COORDINATOR' && (
+              <div className="flex gap-5">
+                <Card className="p-3 cursor-pointer" onClick={handleEdit}>
+                  <IoPencilOutline className="h-5 w-5" />
+                </Card>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Card className="p-3 cursor-pointer">
+                      <IoTrashOutline className="h-5 w-5" />
+                    </Card>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Excluir agendamento?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Esta ação não pode ser desfeita. Deseja excluir
+                        permanentemente este agendamento?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => id && deleteBooking(id)}
+                      >
+                        Excluir
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            )}
           </div>
           <Title>
             <p className="mt-5">Detalhes do Agendamento</p>
