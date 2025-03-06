@@ -76,14 +76,17 @@ const renderDrawerItem = (item: DrawerItemProps, isAdmin: boolean) => {
 
 export const Drawer = () => {
   const { user } = useAuthStore()
-
+  console.log(user)
   return (
-    <div className="h-screen p-5 w-[250px] dark:bg-transparent bg-white border border-r-[1px] fixed left-0">
+    <div className="h-screen p-[20px] w-[250px] dark:bg-transparent bg-white border border-r-[1px] fixed left-0">
       <div className="flex flex-col justify-between  h-full my-[100px]">
         <div>
           {drawerItems.map((item) => (
             <div key={item.name}>
-              {renderDrawerItem(item, user?.role === 'ADMIN')}
+              {renderDrawerItem(
+                item,
+                user?.role === 'ADMIN' || user?.role === 'ATTENDANT'
+              )}
             </div>
           ))}
         </div>
