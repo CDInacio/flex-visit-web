@@ -14,7 +14,7 @@ export function useCreateForm() {
       navigate('/formularios?q=todos')
       queryClient.invalidateQueries({ queryKey: ['form'] })
       queryClient.invalidateQueries({ queryKey: ['forms'] })
-
+      queryClient.invalidateQueries({ queryKey: ['user-historic'] })
       toast({
         variant: 'success',
         title: 'Formulário Criado!',
