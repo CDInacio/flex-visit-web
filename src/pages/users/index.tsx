@@ -19,30 +19,11 @@ import {
 } from '@/components/ui/select'
 
 import { usePagination } from '@/hooks/use-pagination.hook'
-import {
-  IoAddOutline,
-  IoFilterOutline,
-  IoPencilOutline,
-  IoTrashOutline,
-} from 'react-icons/io5'
+import { IoAddOutline, IoFilterOutline } from 'react-icons/io5'
 import { Title } from '@/components/title'
 import { Subtitle } from '@/components/subtitle'
 import { User } from '../../types/user.type'
 import { Button } from '../../components/ui/button'
-import { useDeleteUser } from '../../hooks/use-delete-user'
-
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-
 import {
   Pagination,
   PaginationContent,
@@ -68,16 +49,8 @@ export function Users() {
   const { user: auth } = useAuthStore()
   const navigate = useNavigate()
   const { data, isLoading } = useGetAllUsers()
-  const { mutate: deleteUser, isPending: isLoadingDeleteUser } = useDeleteUser()
   const { mutate: updateUser, isPending: isLoadingUpdateUser } = useUpdateUser()
   const { toast } = useToast()
-  // // Função para lidar com a navegação e aplicar filtros de usuário e período
-  // const handleNavigate = (queryParam: string, value: string) => {
-  //   const currentParams = new URLSearchParams(window.location.search)
-  //   currentParams.set(queryParam, value)
-  //   const url = `/usuarios?${currentParams.toString()}`
-  //   navigate(url)
-  // }
 
   const [selectedRole, setSelectedRole] = useState<string | null>(null)
   const [selectedPeriod, setSelectedPeriod] = useState<string | null>(null)
@@ -135,14 +108,6 @@ export function Users() {
   }
 
   useEffect(() => {
-    if (isLoadingDeleteUser) {
-      toast({
-        variant: 'default',
-        title: 'Deletando usuário',
-        description: 'Aguarde um momento...',
-      })
-    }
-
     if (isLoadingUpdateUser) {
       toast({
         variant: 'default',
@@ -150,7 +115,7 @@ export function Users() {
         description: 'Aguarde um momento...',
       })
     }
-  }, [isLoadingDeleteUser, isLoadingUpdateUser])
+  }, [isLoadingUpdateUser])
 
   return (
     <>
@@ -293,7 +258,7 @@ export function Users() {
                           <SelectContent className="min-w-[100px]">
                             <SelectGroup>
                               <SelectItem value="ADMIN">Admin</SelectItem>
-                              <SelectItem value="USER">Usuário</SelectItem>
+                              <SelectItem value="VISITOR">Visitante</SelectItem>
                               <SelectItem value="ATTENDANT">
                                 Atendente
                               </SelectItem>
@@ -304,7 +269,7 @@ export function Users() {
                           </SelectContent>
                         )}
                       </Select>
-                      {auth?.role === 'ADMIN' && (
+                      {/* {auth?.role === 'ADMIN' && (
                         <>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
@@ -320,18 +285,18 @@ export function Users() {
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() => deleteUser(user.id!)}
                                 >
-                                  Continue
+                                  Deletar
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
                           </AlertDialog>
                           <IoPencilOutline className="text-gray-500 cursor-pointer " />
                         </>
-                      )}
+                      )} */}
                     </TableCell>
                   </TableRow>
                 ))}
