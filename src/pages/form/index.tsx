@@ -16,6 +16,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Switch } from '../../components/ui/switch'
 import { IoAddOutline, IoPencilOutline, IoTrashOutline } from 'react-icons/io5'
 import { useParams } from 'react-router-dom'
@@ -28,9 +39,12 @@ import { selectItems } from '@/constants/selectItems'
 import { GoBack } from '@/components/ui/back-button'
 import { Card } from '@/components/ui/card'
 import { BookingsSkeleton } from '@/components/Bookings/Skeleton'
+import { useDeleteForm } from '@/hooks/use-delete-form'
+import { toast } from '@/components/ui/use-toast'
 
 export function Form() {
   const { id } = useParams<{ id: string }>()
+  const { mutate: deleteForm, isPending: isLoadingDeleteForm } = useDeleteForm()
   const { data: formData, isLoading } = useGetForm(id!)
   const { mutate: updateForm } = useUpdateForm()
   const [isEditing, setIsEditing] = useState(false)
@@ -41,6 +55,16 @@ export function Form() {
       setUpdatedForm(formData)
     }
   }, [formData])
+
+  useEffect(() => {
+    if (isLoadingDeleteForm) {
+      toast({
+        variant: 'default',
+        title: 'Excluindo formulário',
+        description: 'Aguarde um momento...',
+      })
+    }
+  }, [isLoadingDeleteForm])
 
   const handleNameChange = (value: string) => {
     setUpdatedForm((prev: any) => ({ ...prev, form_name: value }))
@@ -129,21 +153,47 @@ export function Form() {
           <>
             <div className="flex text-gray-600 justify-between mb-5">
               <GoBack />
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Card
-                      className="p-3 cursor-pointer"
-                      onClick={() => setIsEditing((prev) => !prev)}
-                    >
-                      <IoPencilOutline className="cursor-pointer w-5 h-5" />
+              <div className="flex gap-5">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Card
+                        className="p-3 cursor-pointer"
+                        onClick={() => setIsEditing((prev) => !prev)}
+                      >
+                        <IoPencilOutline className="cursor-pointer w-5 h-5" />
+                      </Card>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Editar formulário</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Card className="p-3 cursor-pointer text-gray-500 hover:text-gray-700">
+                      <IoTrashOutline className="h-5 w-5 " />
                     </Card>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Editar formulário</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+                  </AlertDialogTrigger>
+                  {/* Remova esse espaço em branco extra */}
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Tem certeza que deseja deletar essa conta?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Essa ação não pode ser desfeita.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => deleteForm(id!)}>
+                        Deletar
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </div>
             <div className="mb-5">
               <Title>{updatedForm?.form_name}</Title>
