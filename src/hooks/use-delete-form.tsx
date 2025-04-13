@@ -15,6 +15,9 @@ export function useDeleteForm() {
           'O formulário foi excluído com sucesso e não pode mais ser acessado.',
       })
       queryClient.invalidateQueries({ queryKey: ['forms'] })
+      setTimeout(() => {
+        window.location.href = '/formularios'
+      }, 2000)
     },
     onError: (error) => {
       toast({
