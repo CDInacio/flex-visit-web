@@ -9,12 +9,17 @@ export function useUpdateUser() {
   return useMutation({
     mutationFn: UserService.updateUser,
     onSuccess: () => {
+      toast({
+        variant: 'success',
+        title: 'Usuário atualizado!',
+        description: 'As alterações foram salvas com sucesso.',
+      })
       queryClient.invalidateQueries({ queryKey: ['users'] })
     },
     onError: (e) => {
       toast({
         variant: 'destructive',
-        title: 'Erro ao atualizar usuário',
+        title: 'Ops, algo deu errado!',
         description: e.message,
       })
     },
