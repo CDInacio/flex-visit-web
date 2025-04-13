@@ -15,6 +15,7 @@ export function useUpdateFormStatus() {
         description: 'O status foi atualizado com sucesso!',
       })
       queryClient.invalidateQueries({ queryKey: ['forms'] })
+      queryClient.invalidateQueries({ queryKey: ['user-historic'] })
     },
   })
 }
