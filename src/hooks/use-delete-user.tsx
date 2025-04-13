@@ -15,6 +15,9 @@ export function useDeleteUser() {
           'O usuário foi removido permanentemente e não pode mais acessar o sistema.',
       })
       queryClient.invalidateQueries({ queryKey: ['users'] })
+      setTimeout(() => {
+        window.location.href = '/usuarios'
+      }, 2000)
     },
     onError: (error) => {
       toast({
