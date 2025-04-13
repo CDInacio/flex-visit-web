@@ -158,7 +158,7 @@ export function Nav() {
           )}
 
           <Separator className="h-[60px] mx-5" orientation="vertical" />
-          <div className="flex flex-col items-end leading-5">
+          <div className="lg:flex flex-col items-end leading-5 hidden">
             <p className="mr-3 font-bold">{user?.fullname}</p>
             <p className="mr-3 text-gray-500">{user?.email}</p>
           </div>
