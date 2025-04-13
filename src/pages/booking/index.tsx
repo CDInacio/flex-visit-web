@@ -261,15 +261,15 @@ export function BookingDetails() {
         <div className="mb-10">
           <div className="flex justify-between">
             <GoBack />
-            {user?.role !== 'COORDINATOR' && (
+            {(user?.role === 'ADMIN' || user?.role === 'VISITOR') && (
               <div className="flex gap-5">
                 <Card className="p-3 cursor-pointer" onClick={handleEdit}>
-                  <IoPencilOutline className="h-5 w-5" />
+                  <IoPencilOutline className="h-5 w-5 text-gray-500" />
                 </Card>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Card className="p-3 cursor-pointer">
-                      <IoTrashOutline className="h-5 w-5" />
+                      <IoTrashOutline className="h-5 w-5 text-gray-500" />
                     </Card>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
