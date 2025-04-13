@@ -12,6 +12,7 @@ export function useUpdateBookingStatus() {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['bookings'] }),
         queryClient.invalidateQueries({ queryKey: ['userBookings'] }),
+        queryClient.invalidateQueries({ queryKey: ['user-historic'] }),
       ])
       toast({
         variant: 'success',
