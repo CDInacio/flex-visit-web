@@ -12,7 +12,7 @@ export function useSignin() {
     onSuccess: (data) => {
       if (data) {
         const userRole = data.user.role
-        if (userRole === 'USER' || userRole === 'COORDINATOR') {
+        if (userRole === 'VISITOR' || userRole === 'COORDINATOR') {
           navigate('/perfil')
         } else {
           navigate('/')
