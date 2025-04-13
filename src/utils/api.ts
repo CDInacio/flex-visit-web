@@ -7,11 +7,11 @@ import axios from 'axios'
 
 // baseURL: 'http://localhost:3001',
 export const api = axios.create({
-  baseURL: 'https://flexvisit-api-1.onrender.com',
+  baseURL: 'http://localhost:3002',
 })
 
 export const privateRequest = axios.create({
-  baseURL: 'https://flexvisit-api-1.onrender.com',
+  baseURL: 'http://localhost:3002',
 })
 // baseURL: 'https://flexvisit-api-1.onrender.com',
 
