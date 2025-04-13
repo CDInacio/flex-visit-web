@@ -23,18 +23,45 @@ import {
   ProfileAvatarSkeleton,
   ProfileBookingsSkeleton,
 } from '@/components/profile/skeleton'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination'
+
 import { toast } from '@/components/ui/use-toast'
 import { PageTitle } from '@/utils/pageTitle'
 import { useQueryClient } from '@tanstack/react-query'
+import { useGetHistoric } from '@/hooks/use-get-historic'
+import { formateDate } from '@/utils/formate-date'
+import type { Historic } from '@/types/historic'
 
 export function Profile() {
   const queryClient = useQueryClient()
-
   const storedUser = useAuthStore()
+  const { data: historic } = useGetHistoric()
   const navigate = useNavigate()
   const { data: user, isLoading: loadingUser } = useGetUser()
   const { data: bookings, isLoading: loadingBookings } = useGetUserBookings()
   const { mutate: updateUser, isPending: loadingUpdateUser } = useUpdateUser()
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5 // Número de registros por página
+
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = currentPage * itemsPerPage
+  const currentHistoric = historic?.slice(startIndex, endIndex) || []
 
   const handleLogout = () => {
     storedUser.logout(queryClient)
@@ -120,8 +147,8 @@ export function Profile() {
     setIsEditing(false)
   }
 
-  const goToBookingPage = (id: string) => {
-    navigate(`/agendamentos/${id}`)
+  const goToDetailsPage = (path: string, id: string) => {
+    navigate(`/${path}/${id}`)
   }
 
   return (
@@ -135,11 +162,7 @@ export function Profile() {
             <div className="text-center overflow-hidden pb-6">
               <div className="flex items-start">
                 <div className="relative group">
-                  <input
-                    type="file"
-                    className="opacity-0 absolute inset-0 z-20 cursor-pointer"
-                  />
-                  <Avatar className="w-56 h-56 group-hover:brightness-75 transition-all duration-200">
+                  <Avatar className="w-56 h-56 ">
                     {user?.profileImage ? (
                       <AvatarImage
                         src={user?.profileImage}
@@ -160,7 +183,6 @@ export function Profile() {
                       </AvatarFallback>
                     )}
                   </Avatar>
-                  <IoPencilOutline className="absolute inset-0 m-auto w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 </div>
                 <div className="text-start ml-5 w-full">
                   {!isEditing ? (
@@ -254,12 +276,105 @@ export function Profile() {
             </div>
           )}
 
-          {/* Agendamentos do Usuário */}
           <Separator />
-          {loadingBookings ? (
+          {/* Agendamentos do Usuário */}
+          {(user?.role === 'ADMIN' || user?.role === 'ATTENDANT') && (
+            <>
+              <Title> Histórico de atividades</Title>
+              <Table className="">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[200px]">Data</TableHead>
+                    <TableHead className="w-[400px]">Responsável</TableHead>
+                    <TableHead className="w-[400px]">Ação</TableHead>
+                    <TableHead className="">Detalhes</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentHistoric.map((data: Historic) => (
+                    <TableRow key={data.id}>
+                      <TableCell>
+                        {formateDate(data.dateTime, 'dd/mm/yyyy hh:mm')}
+                      </TableCell>
+                      <TableCell
+                        className="flex items-center gap-3 cursor-pointer"
+                        onClick={() =>
+                          data.user?.id && goToDetailsPage('usuarios', user.id)
+                        }
+                      >
+                        <Avatar>
+                          {data.user?.profileImage ? (
+                            <AvatarImage
+                              src={data.user?.profileImage}
+                              alt="Profile Image"
+                              className="object-cover"
+                            />
+                          ) : (
+                            <AvatarFallback>
+                              {data.user?.fullname
+                                ? data.user.fullname
+                                    .split(' ')
+                                    .filter(Boolean)
+                                    .slice(0, 2)
+                                    .map((n) => n[0])
+                                    .join('')
+                                    .toUpperCase()
+                                : 'NN'}
+                            </AvatarFallback>
+                          )}
+                        </Avatar>
+                        {data.user.fullname}
+                      </TableCell>
+                      <TableCell>{data.action}</TableCell>
+                      <TableCell className="">{data.details}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <Pagination className="">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.max(prev - 1, 1))
+                      }
+                    />
+                  </PaginationItem>
+                  {[
+                    ...Array(Math.ceil((historic?.length || 0) / itemsPerPage)),
+                  ].map((_, index) => (
+                    <PaginationItem key={index + 1}>
+                      <PaginationLink
+                        href="#"
+                        isActive={currentPage === index + 1}
+                        onClick={() => setCurrentPage(index + 1)}
+                      >
+                        {index + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={() =>
+                        setCurrentPage((prev) =>
+                          Math.min(
+                            prev + 1,
+                            Math.ceil((historic?.length ?? 0) / itemsPerPage)
+                          )
+                        )
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </>
+          )}
+          {storedUser.user?.role === 'VISITOR' && loadingBookings ? (
             <ProfileBookingsSkeleton />
           ) : (
-            user?.role === 'USER' && (
+            user?.role === 'VISITOR' && (
               <div className="w-[500px]">
                 <Title>Meus Agendamentos</Title>
                 <Separator className="my-3" />
@@ -274,7 +389,7 @@ export function Profile() {
                       <div
                         key={data.id}
                         className="my-3 "
-                        onClick={() => goToBookingPage(data.id)}
+                        onClick={() => goToDetailsPage('agendamentos', data.id)}
                       >
                         <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-[#1e1e1e] rounded-lg shadow-sm hover:bg-gray-100 transition duration-300 cursor-pointer">
                           <div>
