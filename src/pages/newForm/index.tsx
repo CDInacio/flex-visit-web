@@ -265,31 +265,37 @@ export function NewForm() {
                   {(field.field_type === 'multiple_choice' ||
                     field.field_type === 'dropdown') && (
                     <div className="mt-2">
-                      {field.options?.map((option, optionIndex) => (
-                        <div
-                          key={optionIndex}
-                          className="flex items-center mb-2"
-                        >
-                          <Input
-                            value={option}
-                            placeholder={`Opção ${optionIndex + 1}`}
-                            onChange={(e) =>
-                              handleOptionChange(
-                                e.target.value,
-                                index,
-                                optionIndex
-                              )
-                            }
-                            className="flex-1"
-                          />
-                          <IoTrashOutline
-                            onClick={() =>
-                              handleRemoveOption(index, optionIndex)
-                            }
-                            className="cursor-pointer ml-2"
-                          />
-                        </div>
-                      ))}
+                      <AnimatePresence>
+                        {field.options?.map((option, optionIndex) => (
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 20 }}
+                            transition={{ duration: 0.2 }}
+                            key={optionIndex}
+                            className="flex items-center mb-2"
+                          >
+                            <Input
+                              value={option}
+                              placeholder={`Opção ${optionIndex + 1}`}
+                              onChange={(e) =>
+                                handleOptionChange(
+                                  e.target.value,
+                                  index,
+                                  optionIndex
+                                )
+                              }
+                              className="flex-1"
+                            />
+                            <IoTrashOutline
+                              onClick={() =>
+                                handleRemoveOption(index, optionIndex)
+                              }
+                              className="cursor-pointer ml-2"
+                            />
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
                       <Button
                         className="mt-2"
                         onClick={() => handleAddOption(index)}
