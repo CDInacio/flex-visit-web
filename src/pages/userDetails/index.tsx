@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useGetUserDetails } from '@/hooks/use-get-user-details'
 // import { useUpdateUserDetails } from '@/hooks/use-update-user-details'
-import { IoPencilOutline } from 'react-icons/io5'
+import { IoPencilOutline, IoTrashOutline } from 'react-icons/io5'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import {
@@ -25,9 +25,24 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { GoBack } from '@/components/ui/back-button'
 import { Skeleton } from '@/components/ui/skeleton'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { useDeleteUser } from '@/hooks/use-delete-user'
+import { useToast } from '@/components/ui/use-toast'
 
 export function UserDetails() {
   const { id } = useParams<{ id?: string }>()
+  const { mutate: deleteUser, isPending: isLoadingDeleteUser } = useDeleteUser()
+  const { toast } = useToast()
 
   const userQuery = id
     ? useGetUserDetails(id)
@@ -61,6 +76,16 @@ export function UserDetails() {
     }
   }, [userDetails])
 
+  useEffect(() => {
+    if (isLoadingDeleteUser) {
+      toast({
+        variant: 'default',
+        title: 'Atualizando usuário',
+        description: 'Aguarde um momento...',
+      })
+    }
+  }, [isLoadingDeleteUser])
+
   const handleEdit = () => {
     setIsEditing(true)
   }
@@ -77,27 +102,6 @@ export function UserDetails() {
     setUserData((prev) => ({ ...prev, [field]: value }))
   }
 
-  const handleUpdateImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files?.[0]
-      const formData = new FormData()
-      formData.append('image', file)
-
-      updateImg(
-        { id: userDetails?.id, data: formData },
-        {
-          onSuccess: (data) => {
-            setUserData({
-              ...userDetails!,
-              profileImage: data.user.profileImage,
-            })
-            localStorage.setItem('user', JSON.stringify(data.user))
-          },
-        }
-      )
-    }
-  }
-
   return (
     <Container className="p-10 flex flex-col items-center">
       <div className="w-[1000px]">
@@ -106,32 +110,35 @@ export function UserDetails() {
           <GoBack />
           <div className="flex gap-5">
             <Card
-              className="p-3 cursor-pointer flex items-center gap-4"
+              className="p-3  hover:text-gray-700 cursor-pointer flex items-center gap-4"
               onClick={handleEdit}
             >
               <IoPencilOutline className="h-5 w-5 text-gray-500" />
-              <p className="text-gray-500 hover:text-gray-700">Editar</p>
             </Card>
-            {/* <AlertDialog>
+            <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Card className="p-3 cursor-pointer">
-                  <IoTrashOutline className="h-5 w-5" />
+                <Card className="p-3 cursor-pointer text-gray-500 hover:text-gray-700">
+                  <IoTrashOutline className="h-5 w-5 " />
                 </Card>
               </AlertDialogTrigger>
+              {/* Remova esse espaço em branco extra */}
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Excluir agendamento?</AlertDialogTitle>
+                  <AlertDialogTitle>
+                    Tem certeza que deseja deletar essa conta?
+                  </AlertDialogTitle>
                   <AlertDialogDescription>
-                    Esta ação não pode ser desfeita. Deseja excluir
-                    permanentemente este agendamento?
+                    Essa ação não pode ser desfeita.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  <AlertDialogAction>Excluir</AlertDialogAction>
+                  <AlertDialogAction onClick={() => deleteUser(id!)}>
+                    Deletar
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-            </AlertDialog> */}
+            </AlertDialog>
           </div>
         </div>
         {isLoading ? (
@@ -151,12 +158,7 @@ export function UserDetails() {
               <div className="text-center">
                 <div className="flex items-center">
                   <div className="relative group">
-                    <input
-                      type="file"
-                      className="opacity-0 absolute inset-0 z-20 cursor-pointer"
-                      onChange={handleUpdateImage}
-                    />
-                    <Avatar className="w-24 h-24 group-hover:brightness-75 transition-all duration-200">
+                    <Avatar className="w-24 h-24">
                       {userDetails?.profileImage ? (
                         <AvatarImage
                           src={userDetails?.profileImage}
@@ -177,7 +179,6 @@ export function UserDetails() {
                         </AvatarFallback>
                       )}
                     </Avatar>
-                    <IoPencilOutline className="absolute inset-0 m-auto w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                   </div>
                 </div>
               </div>
@@ -185,6 +186,7 @@ export function UserDetails() {
             <div>
               <Label htmlFor="fullname">Nome Completo</Label>
               <Input
+                className="mt-2 mb-4"
                 id="fullname"
                 type="text"
                 value={userData.fullname}
@@ -193,6 +195,7 @@ export function UserDetails() {
               />
               <Label htmlFor="email">Email</Label>
               <Input
+                className="mt-2 mb-4"
                 id="email"
                 type="email"
                 value={userData.email}
@@ -201,6 +204,7 @@ export function UserDetails() {
               />
               <Label htmlFor="document">Documento</Label>
               <Input
+                className="mt-2 mb-4"
                 id="document"
                 type="text"
                 value={userData.document}
@@ -209,6 +213,7 @@ export function UserDetails() {
               />
               <Label htmlFor="phone">Telefone</Label>
               <Input
+                className="mt-2 mb-4"
                 id="phone"
                 type="text"
                 value={userData.phoneNumber}
@@ -260,7 +265,7 @@ export function UserDetails() {
                   { locale: ptBR }
                 )}`}
             </p>
-            {userDetails?.role === 'USER' ? (
+            {userDetails?.role === 'VISITOR' ? (
               <>
                 {/* Agendamentos do usuário */}
                 <h1 className="text-lg font-bold tracking-tight lg:text-xl">
@@ -287,9 +292,7 @@ export function UserDetails() {
                   </p>
                 )}
               </>
-            ) : (
-              <p>outros</p>
-            )}
+            ) : null}
           </>
         )}
       </div>
