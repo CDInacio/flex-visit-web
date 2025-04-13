@@ -17,6 +17,7 @@ import { ptBR } from 'date-fns/locale'
 import { useCreateSchedule } from '@/hooks/use-create-schedule'
 import { useNavigate } from 'react-router-dom'
 import { toast } from '../ui/use-toast'
+import { motion, AnimatePresence } from 'framer-motion'
 
 type TimeSlot = {
   starttime: string
@@ -132,7 +133,11 @@ export function NewSchedule() {
         </Button>
         <div className="w-full space-y-6">
           {schedules.map((schedule, dayIndex) => (
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.2 }}
               key={dayIndex}
               className="border rounded-lg p-4 bg-white shadow-sm space-y-4"
             >
@@ -167,48 +172,54 @@ export function NewSchedule() {
                 </Button>
               </div>
               <div className="space-y-3">
-                {schedule.timeSlots.map((slot, timeIndex) => (
-                  <div
-                    key={timeIndex}
-                    className="flex items-center justify-between space-x-4"
-                  >
-                    <div className="flex space-x-2">
-                      <input
-                        type="time"
-                        value={slot.starttime}
-                        onChange={(e) =>
-                          handleTimeChange(
-                            dayIndex,
-                            timeIndex,
-                            'starttime',
-                            e.target.value
-                          )
-                        }
-                        className="p-2 border rounded-md w-28"
+                <AnimatePresence>
+                  {schedule.timeSlots.map((slot, timeIndex) => (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      transition={{ duration: 0.2 }}
+                      key={timeIndex}
+                      className="flex items-center justify-between space-x-4"
+                    >
+                      <div className="flex space-x-2">
+                        <input
+                          type="time"
+                          value={slot.starttime}
+                          onChange={(e) =>
+                            handleTimeChange(
+                              dayIndex,
+                              timeIndex,
+                              'starttime',
+                              e.target.value
+                            )
+                          }
+                          className="p-2 border rounded-md w-28"
+                        />
+                        <span>-</span>
+                        <input
+                          type="time"
+                          value={slot.endtime}
+                          onChange={(e) =>
+                            handleTimeChange(
+                              dayIndex,
+                              timeIndex,
+                              'endtime',
+                              e.target.value
+                            )
+                          }
+                          className="p-2 border rounded-md w-28"
+                        />
+                      </div>
+                      <IoTrashOutline
+                        className=" w-5 h-5 cursor-pointer"
+                        onClick={() => removeTimeSlot(dayIndex, timeIndex)}
                       />
-                      <span>-</span>
-                      <input
-                        type="time"
-                        value={slot.endtime}
-                        onChange={(e) =>
-                          handleTimeChange(
-                            dayIndex,
-                            timeIndex,
-                            'endtime',
-                            e.target.value
-                          )
-                        }
-                        className="p-2 border rounded-md w-28"
-                      />
-                    </div>
-                    <IoTrashOutline
-                      className=" w-5 h-5 cursor-pointer"
-                      onClick={() => removeTimeSlot(dayIndex, timeIndex)}
-                    />
-                  </div>
-                ))}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
         {schedules.length > 0 && (
