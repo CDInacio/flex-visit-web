@@ -171,10 +171,9 @@ export function NewBooking() {
 
   return (
     <Container className="p-10  flex flex-col items-center">
-      <div className="w-[900px]">
-        <div className="mb-5">
-          <GoBack />
-        </div>
+      <div className="w-[1000px]">
+        <GoBack />
+        <div className="mb-5"></div>
         {isLoading ? (
           <div className="w-[1000px] mt-5 flex flex-col gap-5">
             <Skeleton className="w-full h-10" />
