@@ -1,7 +1,6 @@
 import {
   IoIdCardOutline,
   IoMailOutline,
-  IoPencilOutline,
   IoPhonePortraitOutline,
 } from 'react-icons/io5'
 import { Container } from '../../components/container'
