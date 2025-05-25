@@ -6,7 +6,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useGetUserDetails } from '@/hooks/use-get-user-details'
-// import { useUpdateUserDetails } from '@/hooks/use-update-user-details'
 import { IoPencilOutline, IoTrashOutline } from 'react-icons/io5'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
@@ -18,7 +17,6 @@ import {
   SelectTrigger,
 } from '@/components/ui/select'
 import { useUpdateUser } from '@/hooks/use-update-user'
-import { useUpdateUserImg } from '@/hooks/use-update-userImg'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { format } from 'date-fns'
@@ -52,7 +50,6 @@ export function UserDetails() {
   const isLoading = userQuery.isLoading
 
   const { mutate: updateUserDetails } = useUpdateUser()
-  const { mutate: updateImg } = useUpdateUserImg()
   const [isEditing, setIsEditing] = useState(false)
   const [userData, setUserData] = useState({
     fullname: '',
