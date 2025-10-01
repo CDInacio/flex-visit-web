@@ -29,17 +29,30 @@ Com ele, é possível organizar solicitações de visitas, aprovar ou rejeitar a
 
 ## 🖼️ Demonstração (Screenshots)
 
-### Tela de agendamento no app
-![Agendamento Mobile](adm_booking1.png)
+### Home / Dashboard
+![Dashboard](https://i.ibb.co/p6Z7P821/adm-home-page.png)
 
-### Lista de agendamentos no app
-![Lista Agendamentos](adm_bookings.png)
+### Lista de agendamentos
+![Lista Agendamentos](https://i.ibb.co/KjWvHk6m/adm-change-status.png)
 
-### Painel administrativo - usuários e permissões
-![Usuários](adm_booking2.png)
+### Lista de usuários
+![Lista Usuários](https://i.ibb.co/nqKDnhfg/adm-bookings.png)
 
-### Painel administrativo - formulários disponíveis
-![Formulários](adm_forms.png)
+
+### Formulários disponíveis
+![Formulários](https://i.ibb.co/j9KWX9h0/adm-forms.png)
+
+
+### Horários disponíveis
+![Horários](https://i.ibb.co/TBFJnXz8/adm-schedule.png)
+
+
+### Criação de horários
+![Criação de horários](https://i.ibb.co/yFK8q0Hv/adm-new-schedule.png)
+
+
+## Criação de formulários
+![Criação de formulários](https://i.ibb.co/gM2t0CPB/adm-new-form.png)
 
 ---
 
