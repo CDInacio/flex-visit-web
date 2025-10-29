@@ -13,7 +13,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
-import { useToast } from '@/components/ui/use-toast'
 import { Link } from 'react-router-dom'
 import { useSignin } from '@/hooks/use-signin.hook'
 
@@ -25,8 +24,7 @@ const userFormSchema = z.object({
 type UserFormData = z.infer<typeof userFormSchema>
 
 export function SigninForm() {
-  const { toast } = useToast()
-  const { mutate: signin, isPending: isLoading, isError } = useSignin()
+  const { mutate: signin, isPending: isLoading, isSuccess } = useSignin()
 
   const form = useForm<UserFormData>({
     resolver: zodResolver(userFormSchema),
@@ -38,13 +36,10 @@ export function SigninForm() {
   }
 
   useEffect(() => {
-    if (form.formState.isSubmitSuccessful && !isError) {
-      form.reset({
-        email: '',
-        password: '',
-      })
+    if (isSuccess) {
+      form.reset()
     }
-  }, [form.formState, form, toast, isError])
+  }, [isSuccess, form])
 
   return (
     <>
